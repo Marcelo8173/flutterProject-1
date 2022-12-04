@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_app/models/languages.dart';
+import 'package:my_app/utils/default_widget.dart';
 
 class PrincipalScreenWidget extends StatefulWidget {
   const PrincipalScreenWidget({super.key});
@@ -10,10 +11,7 @@ class PrincipalScreenWidget extends StatefulWidget {
 }
 
 class _PrincipalScreenWidgetState extends State<PrincipalScreenWidget> {
-  List<Language> languages = [
-    Language("React", "Meta framework", 'assets/react.svg'),
-    Language("Ios", "Apple native lang", 'assets/apple.svg'),
-  ];
+  List<Language> languages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +19,7 @@ class _PrincipalScreenWidgetState extends State<PrincipalScreenWidget> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Minhas liguagens'),
+        actions: [IconButton(onPressed: _goToForm, icon: iconAdd)],
       ),
       body: Column(children: [
         Center(
@@ -56,7 +55,7 @@ class _PrincipalScreenWidgetState extends State<PrincipalScreenWidget> {
         .map((e) => Card(
               child: ListTile(
                   leading: SvgPicture.asset(
-                    e.asset,
+                    'assets/react.svg',
                     semanticsLabel: e.name,
                     width: 40,
                     height: 40,
@@ -65,5 +64,15 @@ class _PrincipalScreenWidgetState extends State<PrincipalScreenWidget> {
                   subtitle: Text(e.description)),
             ))
         .toList();
+  }
+
+  void _goToForm() {
+    Future future = Navigator.pushNamed(context, "/add");
+
+    future.then((value) {
+      setState(() {
+        languages.add(value);
+      });
+    });
   }
 }
